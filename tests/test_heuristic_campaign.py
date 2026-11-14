@@ -12,7 +12,20 @@ from sam_rl.cli import heuristic_campaign as campaign
 from sam_rl.episode_manifest import episode_identity, load_episode_manifest
 from sam_rl.result_manifest import write_result_metadata
 
+REPO = Path(__file__).resolve().parents[1]
+REAL_CAMPAIGN_MANIFESTS = (
+    REPO / "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/val.json",
+    REPO / "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/test.json",
+    REPO / "artifacts/protocol/fss_manifests/fss_canonical66_v2/test.json",
+    REPO / "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json",
+)
+requires_protocol_bundle = pytest.mark.skipif(
+    not all(path.is_file() for path in REAL_CAMPAIGN_MANIFESTS),
+    reason="Install the separate protocol bundle to test the frozen campaign manifests.",
+)
 
+
+@requires_protocol_bundle
 def test_generator_creates_validation_sweep_and_six_frozen_runs(tmp_path: Path) -> None:
     campaign_dir = tmp_path / "mask_aware_heuristic_v1"
     ledger = campaign.generate_campaign(campaign_dir)
@@ -68,6 +81,7 @@ def test_generator_refuses_to_overwrite_existing_campaign(tmp_path: Path) -> Non
     assert (campaign_dir / "operator.txt").read_text() == "keep"
 
 
+@requires_protocol_bundle
 def test_test_job_fails_closed_until_validation_job_completed(tmp_path: Path) -> None:
     ledger_path = tmp_path / "campaign" / "ledger.json"
     ledger = campaign.generate_campaign(ledger_path.parent)
@@ -81,6 +95,7 @@ def test_test_job_fails_closed_until_validation_job_completed(tmp_path: Path) ->
     )
 
 
+@requires_protocol_bundle
 def test_mocked_sweep_launch_uses_requested_physical_gpu_and_marks_completion(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -190,6 +205,7 @@ def test_mocked_sweep_launch_uses_requested_physical_gpu_and_marks_completion(
     assert launched_command[launched_command.index("--mode") + 1] == "sweep"
 
 
+@requires_protocol_bundle
 def test_nonzero_subprocess_marks_job_failed_without_retry_reset(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

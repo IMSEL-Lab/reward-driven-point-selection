@@ -15,6 +15,13 @@ from sam_rl.cli.evaluation_suite import (
 )
 from sam_rl.cli.experiment_suite import generate_configs
 
+REPO = Path(__file__).resolve().parents[1]
+REAL_EVALUATION_MANIFESTS = (
+    REPO / "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/test.json",
+    REPO / "artifacts/protocol/fss_manifests/fss_canonical66_v2/test.json",
+    REPO / "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json",
+)
+
 
 def make_registry_plan(tmp_path: Path, training_status: str = "planned"):
     registry_path = tmp_path / "training/registry.json"
@@ -78,8 +85,12 @@ def test_evaluation_id_selection_is_exactly_six_per_training_job(tmp_path: Path)
         campaign.evaluation_ids_for_training_jobs(("B2-s17",), {"jobs": plan["jobs"][:-1]})
 
 
+@pytest.mark.skipif(
+    not all(path.is_file() for path in REAL_EVALUATION_MANIFESTS),
+    reason="Install the separate protocol bundle to test plans built from real manifests.",
+)
 def test_ids_from_real_generated_suite_for_bc_and_ppo(tmp_path: Path) -> None:
-    repo = Path(__file__).resolve().parents[1]
+    repo = REPO
     config_dir = tmp_path / "training_configs"
     rows = generate_configs(
         output_dir=config_dir,
