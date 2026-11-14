@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,6 +7,8 @@ name = "sam-cnn-rl"
 version = "0.1.0"
 description = "CNN-based PPO point-selection policy for budget-limited interactive SAM segmentation"
 readme = "README.md"
+license = "0BSD"
+license-files = ["LICENSE"]
 requires-python = ">=3.10,<3.13"
 dependencies = [
   "numpy>=1.26",

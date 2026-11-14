@@ -4,7 +4,7 @@ This repository contains first-party training, evaluation, and analysis code for
 
 The controlled study has 13 selector conditions and five training seeds (65 training runs). Each selected checkpoint is evaluated on two FSS-1000 test sets and one Kvasir-SEG set with SAM ViT-B and ViT-H (390 evaluations). Training uses SAM ViT-B. Checkpoints selected on a clean 357-episode FSS validation set are evaluated with both decoders. Protocol metadata is distributed separately from code and data.
 
-On the main FSS test set with SAM ViT-H, auxiliary-IoU BC scores 0.599 mean IoU; matched PPO refinement without mask feedback scores 0.787. The predeclared original-like PPO condition scores 0.867 ± 0.012 across five training seeds. The closed-loop mask-aware greedy heuristic scores 0.561 on this FSS test with SAM ViT-H, while similarity-weighted farthest-point sampling scores 0.774. Zero-shot performance on Kvasir-SEG is lower at 0.434. See the associated results deposit for full ablations, uncertainty estimates, per-click scores, and comparator details. A DOI will be added here after the deposit is published.
+On the main FSS test set with SAM ViT-H, auxiliary-IoU BC scores 0.599 mean IoU; matched PPO refinement without mask feedback scores 0.787. The predeclared original-like PPO condition scores 0.867 ± 0.012 across five training seeds. The closed-loop mask-aware greedy heuristic scores 0.561 on this FSS test with SAM ViT-H, while similarity-weighted farthest-point sampling scores 0.774. Zero-shot performance on Kvasir-SEG is lower at 0.434. See the [Zenodo results deposit](https://doi.org/10.5281/zenodo.24226833) for full ablations, uncertainty estimates, per-click scores, and comparator details.
 
 ## Install
 
@@ -28,7 +28,7 @@ ln -s /path/to/FSS-1000 data/FSS-1000
 ln -s /path/to/Kvasir-SEG data/Kvasir-SEG
 ```
 
-Dataset images and masks are not redistributed. Protocol manifests contain sample identities and relative paths, without image or mask files. They will be distributed in the separate archival deposit. Install the downloaded protocol bundle with its verified SHA-256 digest:
+Dataset images and masks are not redistributed. Protocol manifests contain sample identities and relative paths, without image or mask files. They are available in the [Zenodo results deposit](https://doi.org/10.5281/zenodo.24226833). Install the downloaded protocol bundle with its verified SHA-256 digest:
 
 ```bash
 uv run --no-sync python -m sam_rl.cli.install_protocol \
@@ -38,7 +38,7 @@ uv run --no-sync python -m sam_rl.cli.install_protocol \
 
 ## Evaluate a released selector
 
-The results deposit will include the 65 selected policy checkpoints. To run R5 with seed 17 on the FSS test set, download `checkpoints/R5-s17.pt` from the deposit into `artifacts/released-checkpoints/`, install the protocol archive, download the model weights, and place the dataset under `data/FSS-1000/`. Then run:
+The results deposit includes the 65 selected policy checkpoints in `results.zip`. To run R5 with seed 17 on the FSS test set, extract `results/checkpoints/R5-s17.pt` from `results.zip` into `artifacts/released-checkpoints/`, install the protocol archive, download the model weights, and place the dataset under `data/FSS-1000/`. Then run:
 
 ```bash
 uv run --no-sync python -m sam_rl.cli.train_rl_finetune \
@@ -81,6 +81,6 @@ After confirming the selected GPU is available, start the pilot with `run` and t
 
 ## Results and citation
 
-The complete numerical results, protocol metadata, and compact analysis tools are prepared for a separate archival deposit. Zenodo DOI [10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833) is reserved; the deposit is not yet published. This repository contains neither result archives, protocol metadata, datasets, nor trained checkpoints.
+The complete numerical results, protocol metadata, selected policy checkpoints, and compact analysis tools are available at [Zenodo, DOI 10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833). This repository contains neither result archives, protocol metadata, datasets, nor trained checkpoints.
 
-Citation metadata is provided in `CITATION.cff`. The project license has not been selected yet; the repository remains private until that release decision is made. See [the reproduction guide](docs/reproduction.md) for conditions, data requirements, commands, and scope limits.
+The first-party code is licensed under [0BSD](LICENSE). Results, protocol manifests, and learned selector weights are dedicated to the public domain under CC0 1.0; the Zenodo helper script uses 0BSD. Third-party dependencies and datasets retain their own terms. Citation metadata is provided in `CITATION.cff`; citing the work is appreciated and is not a license requirement. See [the reproduction guide](docs/reproduction.md) for conditions, data requirements, commands, and scope limits.

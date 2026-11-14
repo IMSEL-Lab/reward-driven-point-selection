@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: >-
-  If you use this software, cite the associated work.
+  If you use this software, please cite the associated work. Citation is appreciated, not required by the license.
 title: "Reward-Driven Point Selection for One-Shot Segmentation with SAM"
 authors:
   - family-names: Muhammad
@@ -18,3 +18,4 @@ authors:
 type: software
 version: 0.1.0
 repository-code: "https://github.com/j-vaught/reward-driven-point-selection"
+license: 0BSD
