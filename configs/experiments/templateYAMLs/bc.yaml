@@ -1,0 +1,94 @@
+seed: 17
+
+dataset:
+  root: data/FSS-1000
+  split_file: artifacts/protocol/splits/fss_class_disjoint_canonical66_v2.json
+  train_split: train
+  val_split: val
+  test_split: test
+  pair_schedule:
+    - [1, 10]
+    - [10, 2]
+    - [2, 3]
+  max_train_episodes:
+  max_val_episodes:
+  max_test_episodes:
+
+models:
+  device: cuda
+  image_size: 224
+  precision: fp32
+  decoder_policy: single
+  sam_embedding_cache_dir: artifacts/sam_embedding_cache/fss1000_vitb_224
+  sam_embedding_cpu_cache_bytes: 12884901888
+  dino_checkpoint: artifacts/weights/dinov2_vitl14_pretrain.pth
+  dino_query_cache_dir: artifacts/greedy_bc/dino_query_cache/fss1000_v2_224
+  dino_query_log_every: 100
+  sam_checkpoint: artifacts/weights/sam_vit_b_01ec64.pth
+  sam_model_type: vit_b
+  eval_sam_checkpoint: artifacts/weights/sam_vit_b_01ec64.pth
+  eval_sam_model_type: vit_b
+  oracle_sam_checkpoint: artifacts/weights/sam_vit_b_01ec64.pth
+  oracle_sam_model_type: vit_b
+  sim_map_cache_dir: artifacts/point_baselines/cache/fss1000_v1_224
+
+oracle:
+  cache_root: artifacts/greedy_bc/oracle_cache/chair_v2_single_fp32
+  max_budget: 5
+  candidate_batch_size: 256
+  candidate_pool_size:
+  use_bfloat16: false
+  precision: fp32
+  decoder_policy: single
+  log_every: 25
+
+protocol:
+  decoder_policy: single
+  precision: fp32
+
+model:
+  grid: 37
+  hidden_channels: 96
+  depth: 4
+  dropout: 0.10
+  use_query_rgb: false
+  use_query_dino_features: true
+  dino_feature_channels: 1024
+  dino_proj_channels: 32
+  use_current_mask: false
+  reserve_mask_channel: true
+
+train:
+  device: cuda
+  run_name: chair_v2
+  budget: 5
+  batch_size: 32
+  eval_batch_size: 64
+  num_workers: 0
+  epochs: 12
+  lr: 0.0003
+  weight_decay: 0.0001
+  max_grad_norm: 1.0
+  warm_start_epochs: 1
+  loss:
+    kind: gaussian_kl
+    sigma: 2.0
+  aux_rollout_iou:
+    enabled: true
+    weight: 0.1
+    subset_size: 16
+    topk: 4
+    temperature: 1.0
+    use_bfloat16: false
+
+validation:
+  evaluate_every_epochs: 1
+  eval_max_episodes: 357
+  checkpoint_metric: iou
+
+evaluation:
+  method_name: chair_v2_bc
+  overlay_limit: 0
+
+paths:
+  run_root: artifacts/experiments/chair_v2/full/bc

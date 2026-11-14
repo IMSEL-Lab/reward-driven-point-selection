@@ -1,0 +1,67 @@
+dataset:
+  kind: fss1000
+  root: data/FSS-1000
+  split_file: artifacts/protocol/splits/fss_canonical_test_disjoint66_v2.json
+  split: canonical66_test
+  pair_schedule:
+    - [7, 1]
+    - [1, 2]
+    - [5, 3]
+    - [5, 4]
+    - [9, 5]
+    - [4, 6]
+    - [6, 7]
+    - [3, 8]
+    - [5, 9]
+    - [8, 10]
+
+models:
+  device: cuda
+  image_size: 224
+  dino_checkpoint: artifacts/weights/dinov2_vitl14_pretrain.pth
+  sam_checkpoint: artifacts/weights/sam_vit_h_4b8939.pth
+  sam_model_type: vit_h
+
+evaluation:
+  point_budgets: [1, 2, 3, 5, 7, 10]
+  seeds: [0, 1, 2, 3, 4]
+  deterministic_seeds: [0]
+  output_csv: artifacts/point_baselines/fss1000_canonical66_grid37/test_results.csv
+  overlay_dir: artifacts/point_baselines/fss1000_canonical66_grid37/overlays
+  overlay_limit: 0
+  overlay_budgets: []
+  sim_map_cache_dir: artifacts/point_baselines/cache/fss1000_canonical66_224
+  prompt_snap_grid: 37
+
+selection:
+  metric: iou
+  best_params_json: artifacts/point_baselines/fss1000_full_suite/best_params.json
+
+methods:
+  - family: topk_argmax
+  - family: topk_nms
+    search:
+      radius: [6, 10, 14]
+  - family: farthest_point_sampling
+  - family: sim_weighted_fps
+    search:
+      alpha: [0.25, 0.5, 0.75]
+  - family: topk_kmeans
+    search:
+      candidate_pool: [64, 128, 256]
+  - family: local_maxima_peaks
+    search:
+      min_separation: [6, 10, 14]
+  - family: connected_component_centers
+    search:
+      threshold: [0.55, 0.65, 0.75]
+  - family: mean_shift_modes
+    search:
+      bandwidth: [6.0, 10.0, 14.0]
+  - family: quantile_spaced
+  - family: sim_weighted_random
+    search:
+      temperature: [0.05, 0.1, 0.2]
+  - family: dpp
+    search:
+      length_scale: [8.0, 12.0, 18.0]

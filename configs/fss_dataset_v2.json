@@ -1,0 +1,16 @@
+{
+  "data_root": "data/FSS-1000",
+  "episode_manifests": {
+    "test": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/test.json",
+    "train": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/train.json",
+    "val": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/val.json"
+  },
+  "episode_seed": 17,
+  "kind": "fss1000",
+  "root": "data/FSS-1000",
+  "split_file": "artifacts/protocol/splits/fss_class_disjoint_canonical66_v2.json",
+  "split_seed": 17,
+  "test_split": "test",
+  "train_split": "train",
+  "val_split": "val"
+}

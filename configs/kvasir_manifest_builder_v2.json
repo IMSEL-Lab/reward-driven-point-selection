@@ -1,0 +1,24 @@
+{
+  "class_name": "polyp",
+  "dataset_name": "kvasir_seg",
+  "dataset_root": "data/Kvasir-SEG",
+  "episode_seed": 17,
+  "images_dir": "data/Kvasir-SEG/images",
+  "masks_dir": "data/Kvasir-SEG/masks",
+  "output_manifest_index_path": "artifacts/generated_protocol/kvasir_manifests/kvasir_support_bank_v2_index.json",
+  "output_manifest_paths": {
+    "test": "artifacts/generated_protocol/kvasir_manifests/kvasir_support_bank_v2_test.json",
+    "train": "artifacts/generated_protocol/kvasir_manifests/kvasir_support_bank_v2_train.json",
+    "val": "artifacts/generated_protocol/kvasir_manifests/kvasir_support_bank_v2_val.json"
+  },
+  "output_split_path": "artifacts/generated_protocol/splits/kvasir_mask_area_quantiles_v2.json",
+  "seed": 17,
+  "split_sizes": {
+    "test": 150,
+    "train": 700,
+    "val": 150
+  },
+  "stratify_quantile_bins": 10,
+  "support_assignments_per_query": 3,
+  "support_bank_size": 64
+}

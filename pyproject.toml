@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sam-cnn-rl"
+version = "0.1.0"
+description = "CNN-based PPO point-selection policy for budget-limited interactive SAM segmentation"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "numpy>=1.26",
+  "Pillow>=10.0",
+  "PyYAML>=6.0",
+  "torch==2.5.1",
+  "torchvision==0.20.1",
+]
+
+[project.optional-dependencies]
+research = [
+  "einops>=0.8",
+  "huggingface_hub>=0.23",
+  "matplotlib>=3.8",
+  "pydantic>=2.7",
+  "rich>=13.7",
+  "segment-anything @ git+https://github.com/facebookresearch/segment-anything.git@dca509fe793f601edb92606367a655c15ac00fdf",
+  "safetensors>=0.4",
+  "timm>=1.0",
+  "transformers>=4.40",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sam_rl*"]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu121", marker = "sys_platform == 'linux'" }]
+torchvision = [{ index = "pytorch-cu121", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "ruff>=0.9",
+  "ty>=0.0.1a1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["third_party", "results", "configs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "RUF"]
+# Line length is enforced by the formatter for code; E501 otherwise only flags
+# long docstrings/strings the formatter intentionally leaves intact.
+ignore = ["E501"]
+
+[tool.ty.environment]
+python-version = "3.10"
+# The pinned research extra provides segment-anything for type checks.
+
+[tool.ty.src]
+exclude = ["results", "configs"]

@@ -1,0 +1,34 @@
+# --- Datasets (download separately; see README) ---
+data/
+
+# --- Large / regenerable artifacts ---
+# Everything under artifacts/ is regenerable and NOT tracked: model weights,
+# SAM embedding caches, DINO query caches, and fresh training-run outputs.
+artifacts/
+
+# Dataset splits and episode manifests are installed under artifacts/protocol/.
+# Generated machine-local experiment configurations are not source inputs.
+configs/generated/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.ty_cache/
+*.egg-info/
+build/
+dist/
+
+# --- Virtualenvs ---
+.venv/
+.venv_*/
+*venv*/
+
+# --- Local environment / editor ---
+.env
+.env.*
+.vscode/
+.idea/
+.claude/
+.DS_Store

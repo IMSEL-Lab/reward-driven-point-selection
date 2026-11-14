@@ -1,0 +1,46 @@
+{
+  "campaign": "mask_aware_heuristic_v1",
+  "source_experiment_spec": "configs/experiments/chair_v2.json",
+  "validation": {
+    "dataset": "fss_class_disjoint_canonical66_v2",
+    "split": "val",
+    "episodes": 357,
+    "sam_model": "vit_b"
+  },
+  "held_out_benchmarks": [
+    {
+      "id": "fss_test450",
+      "manifest": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/test.json",
+      "episodes": 450,
+      "dataset": "fss1000"
+    },
+    {
+      "id": "fss_canonical660",
+      "manifest": "artifacts/protocol/fss_manifests/fss_canonical66_v2/test.json",
+      "episodes": 660,
+      "dataset": "fss1000"
+    },
+    {
+      "id": "kvasir_test450",
+      "manifest": "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json",
+      "episodes": 450,
+      "dataset": "kvasir_seg"
+    }
+  ],
+  "methods": [
+    { "family": "topk_argmax", "parameters": {} },
+    { "family": "mask_aware_greedy", "parameters": {} },
+    {
+      "family": "sim_weighted_fps",
+      "parameter_grid": { "alpha": [0.25, 0.5, 0.75] }
+    }
+  ],
+  "protocol": {
+    "point_budget": 5,
+    "prompt_snap_grid": 37,
+    "evaluation_seed": 0,
+    "precision": "fp32",
+    "decoder_policy": "single",
+    "test_tuning": false
+  }
+}

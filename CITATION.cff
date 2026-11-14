@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, cite the associated work.
+title: "Reward-Driven Point Selection for One-Shot Segmentation with SAM"
+authors:
+  - family-names: Muhammad
+    given-names: Xeerak
+  - family-names: Vaught
+    given-names: J.C.
+  - family-names: Whisenant
+    given-names: Jacob
+  - family-names: Cahl
+    given-names: Douglas
+  - family-names: Tong
+    given-names: Yan
+  - family-names: Wang
+    given-names: Yi
+type: software
+version: 0.1.0
+repository-code: "https://github.com/j-vaught/reward-driven-point-selection"

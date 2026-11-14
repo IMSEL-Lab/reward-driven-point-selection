@@ -1,0 +1,66 @@
+{
+  "suite": "chair_v2",
+  "fss_split_file": "artifacts/protocol/splits/fss_class_disjoint_canonical66_v2.json",
+  "fss_episode_manifests": {
+    "train": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/train.json",
+    "val": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/val.json",
+    "test": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/test.json"
+  },
+  "fss_manifest_version": "canonical_v2",
+  "validation_episodes": 357,
+  "test_episodes": 450,
+  "canonical_test_episodes": 660,
+  "canonical_test_manifest": "artifacts/protocol/fss_manifests/fss_canonical66_v2/test.json",
+  "kvasir": {
+    "split_file": "artifacts/protocol/splits/kvasir_seg_v2.json",
+    "episode_manifests": {
+      "train": "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/train.json",
+      "val": "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/val.json",
+      "test": "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json"
+    },
+    "root": "data/Kvasir-SEG",
+    "test_episodes": 450,
+    "adaptation": false
+  },
+  "learner_seeds": [17, 29, 43, 71, 101],
+  "host_layout": {
+    "worker-a": {
+      "seeds": [17, 29, 43],
+      "gpu_ids": [0, 1, 2]
+    },
+    "worker-b": {
+      "seeds": [71],
+      "gpu_ids": [0, 1, 2]
+    },
+    "worker-c": {
+      "seeds": [101],
+      "gpu_ids": [0]
+    }
+  },
+  "click_budget": 5,
+  "evaluation_protocol": {
+    "fss_test450": "artifacts/protocol/fss_manifests/fss_class_disjoint_canonical66_v2/test.json",
+    "fss_canonical660": "artifacts/protocol/fss_manifests/fss_canonical66_v2/test.json",
+    "kvasir_test450": "artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json",
+    "sam_models": ["vit_b", "vit_h"],
+    "checkpoint_selection": "fss_val357_vit_b",
+    "kvasir_adaptation": false
+  },
+  "grid": 37,
+  "precision": "fp32",
+  "decoder_policy": "single",
+  "bc_epochs": 12,
+  "bc_warmup_epochs": 1,
+  "bc_aux_iou_weight": 0.1,
+  "ppo_env_steps": 1000000,
+  "ppo_num_envs": 32,
+  "ppo_rollout_steps": 5,
+  "validation_interval_updates": 250,
+  "kl_beta_start": 0.1,
+  "kl_beta_end": 0.01,
+  "pilot_train_episodes": 32,
+  "pilot_val_episodes": 6,
+  "pilot_env_steps": 800,
+  "pilot_validation_updates": 5,
+  "output_root": "artifacts/experiments/chair_v2"
+}

@@ -1,0 +1,10 @@
+{
+  "data_root": "data/FSS-1000",
+  "episode_manifest": "artifacts/protocol/fss_manifests/fss_canonical66_v2/test.json",
+  "episode_seed": 17,
+  "kind": "fss1000",
+  "root": "data/FSS-1000",
+  "split": "canonical66_test",
+  "split_file": "artifacts/protocol/splits/fss_canonical_test_disjoint66_v2.json",
+  "split_seed": 17
+}

@@ -1,0 +1,87 @@
+seed: 17
+
+dataset:
+  kind: kvasir_seg
+  train_split: train
+  val_split: val
+  test_split: test
+  episode_manifests:
+    train: artifacts/protocol/kvasir_manifests/kvasir_seg_v2/train.json
+    val: artifacts/protocol/kvasir_manifests/kvasir_seg_v2/val.json
+    test: artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json
+  max_train_episodes:
+  max_val_episodes:
+  max_test_episodes:
+
+models:
+  device: cuda
+  image_size: 224
+  dino_checkpoint: artifacts/weights/dinov2_vitl14_pretrain.pth
+  dino_query_cache_dir: artifacts/greedy_bc/dino_query_cache/kvasir_seg_v2_224
+  dino_query_log_every: 100
+  sam_checkpoint: artifacts/weights/sam_vit_h_4b8939.pth
+  sam_model_type: vit_h
+  eval_sam_checkpoint: artifacts/weights/sam_vit_h_4b8939.pth
+  eval_sam_model_type: vit_h
+  oracle_sam_checkpoint: artifacts/weights/sam_vit_b_01ec64.pth
+  oracle_sam_model_type: vit_b
+  sim_map_cache_dir: artifacts/point_baselines/cache/kvasir_seg_v2_224
+
+oracle:
+  cache_root: artifacts/greedy_bc/oracle_cache/kvasir_seg_vitb_v2
+  max_budget: 10
+  candidate_batch_size: 682
+  candidate_pool_size:
+  use_bfloat16: true
+  log_every: 50
+
+model:
+  grid: 37
+  hidden_channels: 96
+  depth: 4
+  dropout: 0.10
+  use_query_rgb: false
+  use_query_dino_features: true
+  dino_feature_channels: 1024
+  dino_proj_channels: 32
+
+train:
+  device: cuda
+  run_name: kvasir_seg_greedy_bc_v2
+  budget: 5
+  batch_size: 32
+  eval_batch_size: 64
+  num_workers: 0
+  epochs: 12
+  lr: 0.0003
+  weight_decay: 0.0001
+  max_grad_norm: 1.0
+  warm_start_epochs: 1
+  loss:
+    kind: gaussian_kl
+    sigma: 2.0
+  aux_rollout_iou:
+    enabled: true
+    weight: 0.1
+    subset_size: 16
+    topk: 4
+    temperature: 1.0
+    use_bfloat16: true
+
+validation:
+  evaluate_every_epochs: 1
+  eval_max_episodes: 450
+  checkpoint_metric: iou
+
+evaluation:
+  method_name: greedy_bc_v2
+  overlay_limit: 12
+  write_contact_sheet: false
+
+paths:
+  run_root: artifacts/greedy_bc/runs
+
+launcher:
+  budgets: [2, 5, 10]
+  gpus: [0, 1, 2]
+  log_dir: artifacts/greedy_bc/launcher_logs_kvasir_v2

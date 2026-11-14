@@ -1,0 +1,86 @@
+seed: 17
+
+dataset:
+  kind: kvasir_seg
+  train_split: train
+  val_split: val
+  test_split: test
+  episode_manifests:
+    train: artifacts/protocol/kvasir_manifests/kvasir_seg_v2/train.json
+    val: artifacts/protocol/kvasir_manifests/kvasir_seg_v2/val.json
+    test: artifacts/protocol/kvasir_manifests/kvasir_seg_v2/test.json
+
+models:
+  device: cuda
+  image_size: 224
+  dino_checkpoint: artifacts/weights/dinov2_vitl14_pretrain.pth
+  dino_query_cache_dir: artifacts/greedy_bc/dino_query_cache/kvasir_seg_v2_224
+  dino_query_log_every: 100
+  sim_map_cache_dir: artifacts/point_baselines/cache/kvasir_seg_v2_224
+  train_sam_checkpoint: artifacts/weights/sam_vit_b_01ec64.pth
+  train_sam_model_type: vit_b
+  train_sam_embedding_cache_dir: artifacts/rl/sam_embeddings/kvasir_seg_vitb_224
+  train_sam_use_bfloat16: false
+  eval_sam_checkpoint: artifacts/weights/sam_vit_h_4b8939.pth
+  eval_sam_model_type: vit_h
+  eval_sam_embedding_cache_dir: artifacts/rl/sam_embeddings/kvasir_seg_vith_224
+  eval_sam_use_bfloat16: true
+  sam_embedding_log_every: 100
+
+oracle:
+  cache_root: artifacts/greedy_bc/oracle_cache/kvasir_seg_vitb_v2
+
+model:
+  grid: 37
+  hidden_channels: 96
+  depth: 4
+  dropout: 0.10
+  use_query_rgb: false
+  use_query_dino_features: true
+  dino_feature_channels: 1024
+  dino_proj_channels: 32
+  value_hidden_dim: 256
+  use_current_mask: true
+
+rl:
+  framework: cleanrl_ppo
+  device: cuda
+  budget: 5
+  num_envs: 32
+  rollout_steps: 5
+  total_env_steps: 1000000
+  lr: 0.0003
+  weight_decay: 0.0001
+  gamma: 1.0
+  gae_lambda: 0.95
+  clip_coef: 0.2
+  ent_coef_start: 0.01
+  ent_coef_end: 0.001
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  update_epochs: 4
+  minibatch_size: 32
+  normalize_advantages: true
+  kl_beta_start: 0.1
+  kl_beta_end: 0.01
+  kl_beta_decay_fraction: 0.25
+  warm_start_checkpoint: artifacts/greedy_bc/runs/kvasir_seg_greedy_bc_v2_N5/best.pt
+
+validation:
+  evaluate_every_updates: 250
+  selection_episodes: 50
+
+evaluation:
+  method_name: ppo_rl_n5
+  batch_envs: 32
+  write_contact_sheet: false
+
+smoke:
+  episodes: 10
+  max_iou_diff: 0.01
+
+train:
+  run_name: kvasir_seg_rl_ppo_n5_warmstart
+
+paths:
+  run_root: artifacts/rl/runs
