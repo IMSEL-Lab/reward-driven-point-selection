@@ -17,5 +17,5 @@ authors:
     given-names: Yi
 type: software
 version: 0.1.0
-repository-code: "https://github.com/j-vaught/reward-driven-point-selection"
+repository-code: "https://github.com/IMSEL-Lab/reward-driven-point-selection"
 license: 0BSD
