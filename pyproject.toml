@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sam-cnn-rl"
-version = "0.1.0"
+version = "1.0.0"
 description = "CNN-based PPO point-selection policy for budget-limited interactive SAM segmentation"
 readme = "README.md"
 license = "0BSD"
