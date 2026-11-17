@@ -54,7 +54,7 @@ uv run --no-sync python -m sam_rl.cli.train_rl_finetune \
   --device cuda:0
 ```
 
-This evaluation config uses the ViT-B decoder. Evaluation writes outputs under the ignored `artifacts/` directory. For another dataset root or decoder, make a local copy of the config and edit it before evaluation.
+For a quick check on a computer without a GPU, replace `--device cuda:0` with `--device cpu --max-episodes 1`. The first fixed episode uses `moist_proof_pad/1` as support and `moist_proof_pad/10` as query (a `.jpg` image and a `.png` mask for each). With R5, seed 17, and ViT-B, the archived IoU after five clicks is **0.927999** for this episode. The CSV appears under `artifacts/evaluation/released_R5/`. Omit `--max-episodes` to evaluate all 450 episodes. To change the dataset root or decoder, edit a local copy of the configuration.
 
 ## Run a pilot
 
