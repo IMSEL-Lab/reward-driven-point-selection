@@ -81,6 +81,8 @@ After confirming the selected GPU is available, start the pilot with `run` and t
 
 ## Results and citation
 
-The complete numerical results, protocol metadata, selected policy checkpoints, and compact analysis tools are available at [Zenodo, DOI 10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833). This repository contains neither result archives, protocol metadata, datasets, nor trained checkpoints.
+Version 1.0.0 is available as a [GitHub release](https://github.com/IMSEL-Lab/reward-driven-point-selection/releases/tag/v1.0.0) and preserved in the [Zenodo code archive, DOI 10.5281/zenodo.24295124](https://doi.org/10.5281/zenodo.24295124).
+
+Evaluation results and supporting files, including protocol metadata, selected policy checkpoints, and compact analysis tools, are available at [Zenodo, DOI 10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833). This repository contains neither result archives, protocol metadata, datasets, nor trained checkpoints.
 
 The first-party code is licensed under [0BSD](LICENSE). Results, protocol manifests, and learned selector weights are dedicated to the public domain under CC0 1.0; the Zenodo helper script uses 0BSD. Third-party dependencies and datasets retain their own terms. Citation metadata is provided in `CITATION.cff`; citing the work is appreciated and is not a license requirement. See [the reproduction guide](docs/reproduction.md) for conditions, data requirements, commands, and scope limits.

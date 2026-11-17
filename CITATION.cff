@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: >-
-  If you use this software, please cite the associated work. Citation is appreciated, not required by the license.
+  If you use this software, please cite this software release. Citation is appreciated, not required by the license.
 title: "Reward-Driven Point Selection for One-Shot Segmentation with SAM"
 abstract: >-
   Source code for behavioral cloning and proximal policy optimization point
@@ -21,6 +21,7 @@ authors:
     given-names: Yi
 type: software
 version: 1.0.0
+doi: 10.5281/zenodo.24295124
 date-released: 2026-11-16
 repository-code: "https://github.com/IMSEL-Lab/reward-driven-point-selection"
 license: 0BSD
