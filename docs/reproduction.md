@@ -26,7 +26,7 @@ Use one device and local storage for the pilot. For a full study, verify availab
 
 ## Evaluate a released checkpoint
 
-The [results deposit](https://doi.org/10.5281/zenodo.24226833) includes one selected policy checkpoint per condition and seed. Download `results.zip` to the repository root. With the protocol installed, FSS-1000 in `data/FSS-1000/`, and the foundation-model weights downloaded, run this example on a CUDA GPU:
+The [results deposit](https://doi.org/10.5281/zenodo.24322568) includes one selected policy checkpoint per condition and seed. Download `results.zip` to the repository root. With the protocol installed, FSS-1000 in `data/FSS-1000/`, and the foundation-model weights downloaded, run this example on a CUDA GPU:
 
 ```bash
 mkdir -p artifacts/released-checkpoints
@@ -143,4 +143,4 @@ The worker collections must use the same evaluation source and non-overlapping s
 
 ## Limitations and scope
 
-The reported results were produced with one frozen ViT-B training setup and five seeds. Evaluating those checkpoints with ViT-H does not measure training with ViT-H. The Kvasir evaluation tests one medical dataset and does not establish broad medical-domain generalization. The main release results do not include negative prompts, DAgger, PerSAM-F, AlignSAM, or Plug-and-Play PPO. The full five-seed analysis reports training-seed standard deviations separately from episode-cluster bootstrap intervals.
+The reported results were produced with one frozen ViT-B training setup and five seeds. Evaluating those checkpoints with ViT-H does not measure training with ViT-H. The Kvasir evaluation tests one medical dataset and does not establish broad medical-domain generalization. The results archive includes PerSAM-F on the fixed 660-episode comparison set. It does not include negative prompts, DAgger, AlignSAM, or Plug-and-Play PPO. The full five-seed analysis reports training-seed standard deviations separately from episode-cluster bootstrap intervals.

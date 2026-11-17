@@ -4,7 +4,7 @@ This code trains and evaluates a policy that chooses five positive point prompts
 
 We trained 13 selector variants with five seeds each using SAM ViT-B. For each run, we selected a checkpoint on 357 FSS-1000 validation episodes, then evaluated it with both ViT-B and ViT-H on two FSS-1000 test sets and on Kvasir-SEG (390 evaluations in total).
 
-On the 450-episode FSS-1000 test set with ViT-H, BC with an auxiliary intersection-over-union (IoU) objective scores 0.599 mean IoU. PPO refinement raises this to 0.787 with mask feedback disabled in both models. Our reference policy (R5), which uses mask feedback and retains BC as a reference during training, scores 0.867 ± 0.012 (mean ± standard deviation across five seeds). The same policy scores 0.434 on Kvasir-SEG without adaptation. The [Zenodo results deposit](https://doi.org/10.5281/zenodo.24226833) includes the remaining comparisons and scores after each click.
+On the 450-episode FSS-1000 test set with ViT-H, BC with an auxiliary intersection-over-union (IoU) objective scores 0.599 mean IoU. PPO refinement raises this to 0.787 with mask feedback disabled in both models. Our reference policy (R5), which uses mask feedback and retains BC as a reference during training, scores 0.867 ± 0.012 (mean ± standard deviation across five seeds). The same policy scores 0.434 on Kvasir-SEG without adaptation. The [Zenodo results deposit](https://doi.org/10.5281/zenodo.24322568) includes the remaining comparisons and scores after each click.
 
 ## Install
 
@@ -30,7 +30,7 @@ ln -s /path/to/FSS-1000 data/FSS-1000
 ln -s /path/to/Kvasir-SEG data/Kvasir-SEG
 ```
 
-Dataset images and masks are not redistributed. Protocol manifests contain sample identities and relative paths, without image or mask files. They are available in the [Zenodo results deposit](https://doi.org/10.5281/zenodo.24226833). Install the downloaded protocol bundle with its verified SHA-256 digest:
+Dataset images and masks are not redistributed. Protocol manifests contain sample identities and relative paths, without image or mask files. They are available in the [Zenodo results deposit](https://doi.org/10.5281/zenodo.24322568). Install the downloaded protocol bundle with its verified SHA-256 digest:
 
 ```bash
 uv run --no-sync python -m sam_rl.cli.install_protocol \
@@ -87,6 +87,6 @@ After confirming the selected GPU is available, start the pilot with `run` and t
 
 Version 1.0.0 is available as a [GitHub release](https://github.com/IMSEL-Lab/reward-driven-point-selection/releases/tag/v1.0.0) and preserved in the [Zenodo code archive, DOI 10.5281/zenodo.24295124](https://doi.org/10.5281/zenodo.24295124).
 
-The [results archive, DOI 10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833), contains the fixed episode lists, selected checkpoints, and evaluation scores for the five-seed study. The paper’s later PerSAM-F comparison is outside the scope of this archive. To check the archived scores without a GPU, datasets, or model downloads, extract `results.zip` and run `python3 results/check_deposit.py` from the directory where you extracted it.
+The [results archive, DOI 10.5281/zenodo.24322568](https://doi.org/10.5281/zenodo.24322568), contains the fixed episode lists, selected checkpoints, and evaluation scores for the five-seed study. Version 1.1.0 also includes the 660 PerSAM-F episode scores for Table 2 (66 FSS-1000 classes, mean IoU 0.7844). To check the archived scores without a GPU, datasets, or model downloads, extract `results.zip` and run `python3 results/check_deposit.py` from the directory where you extracted it.
 
 The first-party code is licensed under [0BSD](LICENSE). Results, protocol manifests, and learned selector weights are dedicated to the public domain under CC0 1.0; the Zenodo helper script uses 0BSD. Third-party dependencies and datasets retain their own terms. Citation metadata is provided in `CITATION.cff`; citing the work is appreciated and is not a license requirement. See [the reproduction guide](docs/reproduction.md) for conditions, data requirements, commands, and scope limits.
