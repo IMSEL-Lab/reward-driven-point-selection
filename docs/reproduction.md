@@ -26,9 +26,11 @@ Use one device and local storage for the pilot. For a full study, verify availab
 
 ## Evaluate a released checkpoint
 
-The results deposit will contain one selected policy checkpoint per condition and seed. To evaluate R5 with seed 17 on the FSS test split, download `checkpoints/R5-s17.pt` and place it at `artifacts/released-checkpoints/R5-s17.pt`. With the protocol installed, the dataset in `data/FSS-1000/`, and the verified foundation-model weights downloaded, run:
+The [results deposit](https://doi.org/10.5281/zenodo.24226833) includes one selected policy checkpoint per condition and seed. Download `results.zip` to the repository root. With the protocol installed, FSS-1000 in `data/FSS-1000/`, and the foundation-model weights downloaded, run this example on a CUDA GPU:
 
 ```bash
+mkdir -p artifacts/released-checkpoints
+unzip -jo results.zip results/checkpoints/R5-s17.pt -d artifacts/released-checkpoints
 uv run --no-sync python -m sam_rl.cli.train_rl_finetune \
   --config configs/evaluation/r5_fss_test450_sam_b.yaml \
   --mode eval \

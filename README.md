@@ -1,17 +1,19 @@
 # Reward-Driven Point Selection for One-Shot Segmentation
 
-This repository contains first-party training, evaluation, and analysis code for learning point prompts for a frozen Segment Anything Model (SAM). The project compares behavioral cloning (BC) with proximal policy optimization (PPO) under a five-positive-point budget. Images, masks, pretrained weights, checkpoints, and generated results are not stored here.
+This code trains and evaluates a policy that chooses five positive point prompts for a frozen Segment Anything Model (SAM). We compare behavioral cloning (BC), which imitates a greedy selector, with proximal policy optimization (PPO), which rewards improvements to the predicted mask.
 
-The controlled study has 13 selector conditions and five training seeds (65 training runs). Each selected checkpoint is evaluated on two FSS-1000 test sets and one Kvasir-SEG set with SAM ViT-B and ViT-H (390 evaluations). Training uses SAM ViT-B. Checkpoints selected on a clean 357-episode FSS validation set are evaluated with both decoders. Protocol metadata is distributed separately from code and data.
+We trained 13 selector variants with five seeds each using SAM ViT-B. For each run, we selected a checkpoint on 357 FSS-1000 validation episodes, then evaluated it with both ViT-B and ViT-H on two FSS-1000 test sets and on Kvasir-SEG (390 evaluations in total).
 
-On the main FSS test set with SAM ViT-H, auxiliary-IoU BC scores 0.599 mean IoU; matched PPO refinement without mask feedback scores 0.787. The predeclared original-like PPO condition scores 0.867 ± 0.012 across five training seeds. The closed-loop mask-aware greedy heuristic scores 0.561 on this FSS test with SAM ViT-H, while similarity-weighted farthest-point sampling scores 0.774. Zero-shot performance on Kvasir-SEG is lower at 0.434. See the [Zenodo results deposit](https://doi.org/10.5281/zenodo.24226833) for full ablations, uncertainty estimates, per-click scores, and comparator details.
+On the 450-episode FSS-1000 test set with ViT-H, BC with an auxiliary intersection-over-union (IoU) objective scores 0.599 mean IoU. PPO refinement raises this to 0.787 with mask feedback disabled in both models. Our reference policy (R5), which uses mask feedback and retains BC as a reference during training, scores 0.867 ± 0.012 (mean ± standard deviation across five seeds). The same policy scores 0.434 on Kvasir-SEG without adaptation. The [Zenodo results deposit](https://doi.org/10.5281/zenodo.24226833) includes the remaining comparisons and scores after each click.
 
 ## Install
 
 The project supports Python 3.10–3.12 and uses `uv` to install the locked environment. The research extra installs [Segment Anything](https://github.com/facebookresearch/segment-anything/tree/dca509fe793f601edb92606367a655c15ac00fdf) at a fixed upstream revision. DINOv2 is loaded from its [fixed upstream revision](https://github.com/facebookresearch/dinov2/tree/7764ea0f912e53c92e82eb78a2a1631e92725fc8). Upstream source is fetched during installation or first model load; no upstream source is vendored in this repository.
 
 ```bash
-uv sync --extra research
+git clone https://github.com/IMSEL-Lab/reward-driven-point-selection.git
+cd reward-driven-point-selection
+uv sync --locked --extra research
 ```
 
 Download the verified SAM and DINOv2 checkpoints into the ignored `artifacts/weights/` directory:
@@ -38,9 +40,11 @@ uv run --no-sync python -m sam_rl.cli.install_protocol \
 
 ## Evaluate a released selector
 
-The results deposit includes the 65 selected policy checkpoints in `results.zip`. To run R5 with seed 17 on the FSS test set, extract `results/checkpoints/R5-s17.pt` from `results.zip` into `artifacts/released-checkpoints/`, install the protocol archive, download the model weights, and place the dataset under `data/FSS-1000/`. Then run:
+To evaluate R5 (seed 17), download `results.zip` from the results deposit to the repository root. This example uses FSS-1000 and a CUDA GPU; Kvasir-SEG is not needed. After installing the protocol and weights above, extract the selector and run:
 
 ```bash
+mkdir -p artifacts/released-checkpoints
+unzip -jo results.zip results/checkpoints/R5-s17.pt -d artifacts/released-checkpoints
 uv run --no-sync python -m sam_rl.cli.train_rl_finetune \
   --config configs/evaluation/r5_fss_test450_sam_b.yaml \
   --mode eval \
@@ -83,6 +87,6 @@ After confirming the selected GPU is available, start the pilot with `run` and t
 
 Version 1.0.0 is available as a [GitHub release](https://github.com/IMSEL-Lab/reward-driven-point-selection/releases/tag/v1.0.0) and preserved in the [Zenodo code archive, DOI 10.5281/zenodo.24295124](https://doi.org/10.5281/zenodo.24295124).
 
-Evaluation results and supporting files, including protocol metadata, selected policy checkpoints, and compact analysis tools, are available at [Zenodo, DOI 10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833). This repository contains neither result archives, protocol metadata, datasets, nor trained checkpoints.
+The [results archive, DOI 10.5281/zenodo.24226833](https://doi.org/10.5281/zenodo.24226833), contains the fixed episode lists, selected checkpoints, and evaluation scores for the five-seed study. The paper’s later PerSAM-F comparison is outside the scope of this archive. To check the archived scores without a GPU, datasets, or model downloads, extract `results.zip` and run `python3 results/check_deposit.py` from the directory where you extracted it.
 
 The first-party code is licensed under [0BSD](LICENSE). Results, protocol manifests, and learned selector weights are dedicated to the public domain under CC0 1.0; the Zenodo helper script uses 0BSD. Third-party dependencies and datasets retain their own terms. Citation metadata is provided in `CITATION.cff`; citing the work is appreciated and is not a license requirement. See [the reproduction guide](docs/reproduction.md) for conditions, data requirements, commands, and scope limits.
